@@ -54,11 +54,13 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
-    new Dotenv()
+    new Dotenv({
+      path: path.resolve(__dirname, '.env'),
+      silent: true // чтобы не было предупреждений, если файла нет
+    })
   ],
   resolve: {
     extensions: [
-      '*',
       '.js',
       '.jsx',
       '.ts',
@@ -71,6 +73,7 @@ module.exports = {
       '.jpg'
     ],
     alias: {
+      src: path.resolve(__dirname, './src'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@components': path.resolve(__dirname, './src/components'),
       '@ui': path.resolve(__dirname, './src/components/ui'),
@@ -89,6 +92,7 @@ module.exports = {
     static: path.join(__dirname, './dist'),
     compress: true,
     historyApiFallback: true,
-    port: 4000
+    port: 4000,
+    open: true
   }
 };
