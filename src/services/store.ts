@@ -7,7 +7,7 @@ import { ingredientsReducer } from './slices/ingredientsSlice';
 
 const rootReducer = {
   ingredients: ingredientsReducer,
-  constructor: constructorReducer
+  constructorSlice: constructorReducer
 };
 
 const store = configureStore({

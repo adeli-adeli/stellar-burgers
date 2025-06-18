@@ -7,7 +7,8 @@ import { FC } from 'react';
 import { useAppSelector } from 'src/services/store';
 
 export const ConstructorPage: FC = () => {
-  const isLoading  = false
+  // const isLoading = useAppSelector((state) => state.ingredients.isLoading)
+  const isLoading = false;
 
   return (
     <>

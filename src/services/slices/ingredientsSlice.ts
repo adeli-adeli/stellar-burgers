@@ -20,8 +20,8 @@ export const fetchIngredients = createAsyncThunk<TIngredient[]>(
     try {
       const response = await getIngredientsApi();
       return response;
-    } catch (error) {
-      return rejectWithValue(error);
+    } catch (error: any) {
+      return rejectWithValue(error.message);
     }
   }
 );

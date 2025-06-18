@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, FC } from 'react';
+import { useState, useRef, useEffect, FC, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
@@ -11,10 +11,9 @@ export const BurgerIngredients: FC = () => {
   const dispatch = useAppDispatch();
 
   // фильтрация данных
-  const buns = data.filter((i) => i.type === 'bun');
-  const sauces = data.filter((i) => i.type === 'sauce');
-  const mains = data.filter((i) => i.type === 'main');
-
+  const buns = useMemo(() => data.filter((i) => i.type === 'bun'), [data]);
+  const sauces = useMemo(() => data.filter((i) => i.type === 'sauce'), [data]);
+  const mains = useMemo(() => data.filter((i) => i.type === 'main'), [data]);
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);
@@ -37,7 +36,6 @@ export const BurgerIngredients: FC = () => {
   useEffect(() => {
     dispatch(fetchIngredients());
   }, [dispatch]);
-
 
   useEffect(() => {
     if (inViewBuns) {
