@@ -3,12 +3,10 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useAppDispatch, useAppSelector, RootState } from 'src/services/store';
-import { fetchIngredients } from 'src/services/slices/ingredientsSlice';
+import { useAppSelector, RootState } from 'src/services/store';
 
 export const BurgerIngredients: FC = () => {
   const { data } = useAppSelector((state: RootState) => state.ingredients);
-  const dispatch = useAppDispatch();
 
   // фильтрация данных
   const buns = useMemo(() => data.filter((i) => i.type === 'bun'), [data]);
@@ -31,11 +29,6 @@ export const BurgerIngredients: FC = () => {
   const [saucesRef, inViewSauces] = useInView({
     threshold: 0
   });
-
-  //запрос на получение данных
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
 
   useEffect(() => {
     if (inViewBuns) {
