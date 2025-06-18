@@ -1,17 +1,34 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useAppSelector } from 'src/services/store';
+import { useAppDispatch, useAppSelector } from 'src/services/store';
+import { closeModal, createOrder } from 'src/services/slices/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
+  const dispatch = useAppDispatch();
   const { bun, constructorItems, orderModalData, orderRequest } =
     useAppSelector((state) => state.constructorSlice);
 
+  // обтработчик клика по кнопке "Оформить заказ"
   const onOrderClick = () => {
     if (!bun || orderRequest) return;
-  };
-  const closeOrderModal = () => {};
 
+    //создаем массив id ингредиентов
+    const ingredients = [
+      bun._id,
+      ...constructorItems.map((item) => item._id),
+      bun._id
+    ];
+
+    dispatch(createOrder(ingredients));
+  };
+
+  //обработчик закрытия модального окна
+  const closeOrderModal = () => {
+    dispatch(closeModal());
+  };
+
+  // общая стоимость
   const price = useMemo(
     () =>
       (bun ? bun.price * 2 : 0) +

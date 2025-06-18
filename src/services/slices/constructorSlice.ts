@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { orderBurgerApi } from '../../utils/burger-api';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient, TOrder, TOrdersData } from '@utils-types';
 
 interface InitialState {
@@ -14,6 +15,19 @@ const initialState: InitialState = {
   orderRequest: false,
   orderModalData: null
 };
+
+//отправка заказа на сервер
+export const createOrder = createAsyncThunk(
+  'constructor/createOrder',
+  async (ingredients: string[], { rejectWithValue }) => {
+    try {
+      const response = await orderBurgerApi(ingredients);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 export const ConstructorSlice = createSlice({
   name: 'constructor',
@@ -74,7 +88,28 @@ export const ConstructorSlice = createSlice({
     clearConstructor: (state) => {
       state.constructorItems = [];
       state.bun = null;
+    },
+
+    //закрытие модального окна
+    closeModal: (state) => {
+      state.orderModalData = null;
+      state.orderRequest = false;
     }
+  },
+
+  // обработка состояния загрузки
+  extraReducers: (builder) => {
+    builder
+      .addCase(createOrder.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(createOrder.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload.order;
+      })
+      .addCase(createOrder.rejected, (state) => {
+        state.orderRequest = false;
+      });
   }
 });
 
@@ -85,6 +120,7 @@ export const {
   setOrderRequest,
   clearConstructor,
   moveItemDown,
-  moveItemUp
+  moveItemUp,
+  closeModal
 } = ConstructorSlice.actions;
 export const constructorReducer = ConstructorSlice.reducer;
