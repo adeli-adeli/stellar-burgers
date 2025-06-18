@@ -13,12 +13,13 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 
-import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { AppHeader, IngredientDetails, Modal } from '@components';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import ProtectedRoute from '../../router/protected-router';
 
 const App = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const state = location.state as { backgroundLocation?: Location };
   const backgroundLocation = state?.backgroundLocation;
 
@@ -82,9 +83,17 @@ const App = () => {
           }
         />
 
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+
         {/* 404 */}
         <Route path='*' element={<NotFound404 />} />
       </Routes>
+
+      {backgroundLocation && (
+        <Modal title='' onClose={() => navigate(-1)}>
+          <IngredientDetails />
+        </Modal>
+      )}
     </div>
   );
 };
