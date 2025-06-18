@@ -16,7 +16,7 @@ const initialState: InitialState = {
   orderModalData: null
 };
 
-//отправка заказа на сервер
+//Асинхронный thunk для создания заказа
 export const createOrder = createAsyncThunk(
   'constructor/createOrder',
   async (ingredients: string[], { rejectWithValue }) => {
