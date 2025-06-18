@@ -3,16 +3,25 @@ import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
 import { closeModal, createOrder } from 'src/services/slices/constructorSlice';
+import useAuth from 'src/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
   const { bun, constructorItems, orderModalData, orderRequest } =
     useAppSelector((state) => state.constructorSlice);
+  const { isAuth } = useAuth();
+  const navigate = useNavigate();
 
-  // обтработчик клика по кнопке "Оформить заказ"
+  // обработчик клика по кнопке "Оформить заказ"
   const onOrderClick = () => {
     if (!bun || orderRequest) return;
 
+    //проверка авторизации
+    if (!isAuth) {
+      navigate('/login');
+      return;
+    }
     //создаем массив id ингредиентов
     const ingredients = [
       bun._id,
