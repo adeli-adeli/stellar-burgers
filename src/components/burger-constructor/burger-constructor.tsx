@@ -2,15 +2,19 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
-import { closeModal, createOrder } from 'src/services/slices/constructorSlice';
 import useAuth from 'src/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { closeModal, createOrder } from 'src/services/slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
-  const { bun, constructorItems, orderModalData, orderRequest } =
-    useAppSelector((state) => state.constructorSlice);
-  const { isAuth } = useAuth();
+  const { bun, constructorItems } = useAppSelector(
+    (state) => state.constructorSlice
+  );
+  const { orderRequest, orderModalData } = useAppSelector(
+    (state) => state.orderSlice
+  );
+  const { isAuth, isLoading } = useAppSelector((state) => state.authSlice);
   const navigate = useNavigate();
 
   // обработчик клика по кнопке "Оформить заказ"
@@ -18,7 +22,7 @@ export const BurgerConstructor: FC = () => {
     if (!bun || orderRequest) return;
 
     //проверка авторизации
-    if (!isAuth) {
+    if (!isAuth && !isLoading) {
       navigate('/login');
       return;
     }

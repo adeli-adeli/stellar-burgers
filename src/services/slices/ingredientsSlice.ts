@@ -14,6 +14,7 @@ const initialState: InitialState = {
   error: null
 };
 
+//Асинхронный thunk для получения ингредиентов
 export const fetchIngredients = createAsyncThunk<TIngredient[]>(
   'ingredients/fetchIngredients',
   async (_, { rejectWithValue }) => {

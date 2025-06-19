@@ -1,40 +1,22 @@
-import { orderBurgerApi } from '../../utils/burger-api';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TOrder } from '@utils-types';
+import { createSlice } from '@reduxjs/toolkit';
+import { TConstructorIngredient } from '@utils-types';
 
 interface InitialState {
   bun: TConstructorIngredient | null;
   constructorItems: TConstructorIngredient[];
-  orderRequest: boolean;
-  orderModalData: TOrder | null;
 }
 
 const initialState: InitialState = {
   bun: null,
-  constructorItems: [],
-  orderRequest: false,
-  orderModalData: null
+  constructorItems: []
 };
-
-//Асинхронный thunk для создания заказа
-export const createOrder = createAsyncThunk(
-  'constructor/createOrder',
-  async (ingredients: string[], { rejectWithValue }) => {
-    try {
-      const response = await orderBurgerApi(ingredients);
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
 
 export const ConstructorSlice = createSlice({
   name: 'constructor',
   initialState,
   reducers: {
     //добавление
-    addIngredient: (state, action: PayloadAction<TConstructorIngredient>) => {
+    addIngredient: (state, action) => {
       const ingredient = action.payload;
       if (ingredient.type === 'bun') {
         state.bun = ingredient;
@@ -44,24 +26,14 @@ export const ConstructorSlice = createSlice({
     },
 
     //удаление
-    removeIngredient: (state, action: PayloadAction<string>) => {
+    removeIngredient: (state, action) => {
       state.constructorItems = state.constructorItems.filter(
         (item) => item.id !== action.payload
       );
     },
 
-    //состояние загрузки заказа
-    setOrderRequest: (state, action: PayloadAction<boolean>) => {
-      state.orderRequest = action.payload;
-    },
-
-    //данные модального окна заказа
-    setOrderModalData: (state, action: PayloadAction<TOrder | null>) => {
-      state.orderModalData = action.payload;
-    },
-
     //поднять вверх
-    moveItemUp: (state, action: PayloadAction<number>) => {
+    moveItemUp: (state, action) => {
       const item = action.payload;
 
       if (item > 0) {
@@ -73,7 +45,7 @@ export const ConstructorSlice = createSlice({
     },
 
     //переместить вниз
-    moveItemDown: (state, action: PayloadAction<number>) => {
+    moveItemDown: (state, action) => {
       const item = action.payload;
 
       if (item < state.constructorItems.length - 1) {
@@ -88,43 +60,15 @@ export const ConstructorSlice = createSlice({
     clearConstructor: (state) => {
       state.constructorItems = [];
       state.bun = null;
-    },
-
-    //закрытие модального окна
-    closeModal: (state) => {
-      state.orderModalData = null;
-      state.orderRequest = false;
     }
-  },
-
-  // обработка состояния загрузки
-  extraReducers: (builder) => {
-    builder
-      .addCase(createOrder.pending, (state) => {
-        state.orderRequest = true;
-      })
-      .addCase(createOrder.fulfilled, (state, action) => {
-        state.orderRequest = false;
-        state.orderModalData = action.payload.order;
-
-        //очистка конструктора
-        state.constructorItems = [];
-        state.bun = null;
-      })
-      .addCase(createOrder.rejected, (state) => {
-        state.orderRequest = false;
-      });
   }
 });
 
 export const {
   addIngredient,
   removeIngredient,
-  setOrderModalData,
-  setOrderRequest,
   clearConstructor,
   moveItemDown,
-  moveItemUp,
-  closeModal
+  moveItemUp
 } = ConstructorSlice.actions;
 export const constructorReducer = ConstructorSlice.reducer;
