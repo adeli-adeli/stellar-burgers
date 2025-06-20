@@ -4,6 +4,7 @@ import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
 import { useNavigate } from 'react-router-dom';
 import { closeModal, createOrder } from 'src/services/slices/orderSlice';
+import { clearConstructor } from 'src/services/slices/constructorSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
@@ -33,6 +34,7 @@ export const BurgerConstructor: FC = () => {
     ];
 
     dispatch(createOrder(ingredients));
+    dispatch(clearConstructor());
   };
 
   //обработчик закрытия модального окна
