@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/services/store';
+
+import React, { useEffect } from 'react';
+import { profileUser } from 'src/services/slices/profileSlice';
 
 const useAuth = () => {
-  const [isAuth, setIsAuth] = useState(false);
+  const { isAuth } = useAppSelector((state) => state.authSlice);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    setIsAuth(!!token);
-  }, []);
+    if (token && !isAuth) {
+      dispatch(profileUser());
+    }
+  }, [isAuth, dispatch]);
   return { isAuth };
 };
 

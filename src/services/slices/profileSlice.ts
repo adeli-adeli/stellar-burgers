@@ -31,6 +31,7 @@ export const registerUser = createAsyncThunk<TAuthResponse, TRegisterData>(
   async (data, { rejectWithValue }) => {
     try {
       const response = await registerUserApi(data);
+      localStorage.setItem('token', response.accessToken);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -58,6 +59,7 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
     try {
       const response = await loginUserApi(data);
       setCookie('accessToken', response.accessToken);
+      localStorage.setItem('token', response.accessToken);
       return response;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -80,6 +82,7 @@ export const registerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.user = action.payload.user;
+        localStorage.setItem('token', action.payload.accessToken);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -107,6 +110,7 @@ export const authSlice = createSlice({
     },
     logoutUser: (state) => {
       state.user = null;
+      localStorage.removeItem('token');
     }
   },
   extraReducers: (builder) => {
