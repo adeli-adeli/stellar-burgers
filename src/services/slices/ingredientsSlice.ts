@@ -3,13 +3,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 
 interface InitialState {
-  data: TIngredient[];
+  ingredients: TIngredient[];
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: InitialState = {
-  data: [],
+  ingredients: [],
   isLoading: true,
   error: null
 };
@@ -39,7 +39,7 @@ export const IngredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = action.payload;
+        state.ingredients = action.payload;
         state.error = null;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {

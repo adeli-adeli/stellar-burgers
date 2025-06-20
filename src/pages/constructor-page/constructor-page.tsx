@@ -9,14 +9,16 @@ import { fetchIngredients } from 'src/services/slices/ingredientsSlice';
 
 export const ConstructorPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, data } = useAppSelector((state) => state.ingredients);
+  const { isLoading, ingredients } = useAppSelector(
+    (state) => state.ingredientsSlice
+  );
 
   // Загружаем ингредиенты при монтировании компонента только если данных нет
   useEffect(() => {
-    if (data.length === 0) {
+    if (ingredients.length === 0) {
       dispatch(fetchIngredients());
     }
-  }, [dispatch, data.length]);
+  }, [dispatch, ingredients.length]);
 
   return (
     <>

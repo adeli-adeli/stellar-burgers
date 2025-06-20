@@ -2,7 +2,6 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
-import useAuth from 'src/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { closeModal, createOrder } from 'src/services/slices/orderSlice';
 

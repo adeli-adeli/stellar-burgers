@@ -6,12 +6,23 @@ import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useAppSelector, RootState } from 'src/services/store';
 
 export const BurgerIngredients: FC = () => {
-  const { data } = useAppSelector((state: RootState) => state.ingredients);
+  const { ingredients } = useAppSelector(
+    (state: RootState) => state.ingredientsSlice
+  );
 
   // фильтрация данных
-  const buns = useMemo(() => data.filter((i) => i.type === 'bun'), [data]);
-  const sauces = useMemo(() => data.filter((i) => i.type === 'sauce'), [data]);
-  const mains = useMemo(() => data.filter((i) => i.type === 'main'), [data]);
+  const buns = useMemo(
+    () => ingredients.filter((i) => i.type === 'bun'),
+    [ingredients]
+  );
+  const sauces = useMemo(
+    () => ingredients.filter((i) => i.type === 'sauce'),
+    [ingredients]
+  );
+  const mains = useMemo(
+    () => ingredients.filter((i) => i.type === 'main'),
+    [ingredients]
+  );
 
   const [currentTab, setCurrentTab] = useState<TTabMode>('bun');
   const titleBunRef = useRef<HTMLHeadingElement>(null);

@@ -1,24 +1,39 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
-import { getOrders } from 'src/services/slices/orderSlice';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
+import { getFeeds } from 'src/services/slices/feedSlice';
 
 export const Feed: FC = () => {
-  const { orders } = useAppSelector((state) => state.orderSlice);
+  const { orders, isLoading } = useAppSelector((state) => state.feedSlice);
+  const { isAuth } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
+  let interval: NodeJS.Timeout;
 
   useEffect(() => {
-    dispatch(getOrders());
-  }, [dispatch]);
+    if (orders.length === 0) {
+      dispatch(getFeeds());
+    }
 
-  if (!orders.length) {
-    return <Preloader />;
-  }
+    // TODO: сделать подписку на вебсокет
+    // interval = setInterval(() => {
+    //   dispatch(getFeeds());
+    // }, 5000);
+
+    // return () => clearInterval(interval);
+  }, [dispatch, orders.length]);
 
   const handleGetFeeds = () => {
-    dispatch(getOrders());
+    dispatch(getFeeds());
   };
 
-  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
+  return (
+    <>
+      {isLoading ? (
+        <Preloader />
+      ) : (
+        <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />
+      )}
+    </>
+  );
 };

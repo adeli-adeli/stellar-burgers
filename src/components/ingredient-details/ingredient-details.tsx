@@ -7,8 +7,8 @@ import { useParams } from 'react-router-dom';
 export const IngredientDetails: FC = () => {
   //получаем id из url
   const { id } = useParams<{ id: string }>();
-  const { data } = useAppSelector((state) => state.ingredients);
-  const ingredientData = data.find((item) => item._id === id);
+  const { ingredients } = useAppSelector((state) => state.ingredientsSlice);
+  const ingredientData = ingredients.find((item) => item._id === id);
 
   if (!ingredientData) {
     return <Preloader />;

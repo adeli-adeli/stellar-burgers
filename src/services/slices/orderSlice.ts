@@ -27,19 +27,6 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-//Асинхронный thunk для получения заказов
-export const getOrders = createAsyncThunk(
-  'order/getOrders',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await getOrdersApi();
-      return response;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
 export const OrderSlice = createSlice({
   name: 'order',
   initialState,
@@ -71,21 +58,8 @@ export const OrderSlice = createSlice({
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
         state.orders = [...state.orders, action.payload.order];
-        console.log('отправка заказа', state.orders);
       })
       .addCase(createOrder.rejected, (state) => {
-        state.orderRequest = false;
-      })
-
-      .addCase(getOrders.pending, (state) => {
-        state.orderRequest = true;
-      })
-      .addCase(getOrders.fulfilled, (state, action) => {
-        state.orderRequest = false;
-        state.orders = action.payload;
-        console.log('получение заказов', state.orders);
-      })
-      .addCase(getOrders.rejected, (state) => {
         state.orderRequest = false;
       });
   }

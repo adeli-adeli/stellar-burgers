@@ -3,16 +3,21 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import { constructorReducer } from './slices/constructorSlice';
-import { ingredientsReducer } from './slices/ingredientsSlice';
+import {
+  ingredientsReducer,
+  IngredientsSlice
+} from './slices/ingredientsSlice';
 import { orderReducer } from './slices/orderSlice';
 import { authReducer, registerReducer } from './slices/profileSlice';
+import { feedReducer } from './slices/feedSlice';
 
 const rootReducer = {
-  ingredients: ingredientsReducer,
+  ingredientsSlice: ingredientsReducer,
   constructorSlice: constructorReducer,
   orderSlice: orderReducer,
   registerSlice: registerReducer,
-  authSlice: authReducer
+  authSlice: authReducer,
+  feedSlice: feedReducer
 };
 
 const store = configureStore({
