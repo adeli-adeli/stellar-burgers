@@ -8,7 +8,11 @@ import {
   IngredientsSlice
 } from './slices/ingredientsSlice';
 import { orderReducer } from './slices/orderSlice';
-import { authReducer, registerReducer } from './slices/profileSlice';
+import {
+  authReducer,
+  createUserReducer,
+  registerReducer
+} from './slices/profileSlice';
 import { feedReducer } from './slices/feedSlice';
 
 const rootReducer = {
@@ -17,7 +21,8 @@ const rootReducer = {
   orderSlice: orderReducer,
   registerSlice: registerReducer,
   authSlice: authReducer,
-  feedSlice: feedReducer
+  feedSlice: feedReducer,
+  createUserSlice: createUserReducer
 };
 
 const store = configureStore({
