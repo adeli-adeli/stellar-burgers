@@ -6,7 +6,6 @@ import { getFeeds } from 'src/services/slices/feedSlice';
 
 export const Feed: FC = () => {
   const { orders, isLoading } = useAppSelector((state) => state.feedSlice);
-  const { isAuth } = useAppSelector((state) => state.authSlice);
   const dispatch = useAppDispatch();
   let interval: NodeJS.Timeout;
 
@@ -15,12 +14,11 @@ export const Feed: FC = () => {
       dispatch(getFeeds());
     }
 
-    // TODO: сделать подписку на вебсокет
-    // interval = setInterval(() => {
-    //   dispatch(getFeeds());
-    // }, 5000);
+    interval = setInterval(() => {
+      dispatch(getFeeds());
+    }, 5000);
 
-    // return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, [dispatch, orders.length]);
 
   const handleGetFeeds = () => {

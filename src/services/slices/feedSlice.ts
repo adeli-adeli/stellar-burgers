@@ -1,4 +1,4 @@
-import { getOrdersApi } from '@api';
+import { getFeedsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
@@ -19,8 +19,8 @@ export const getFeeds = createAsyncThunk(
   'feed/greFeeds',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await getOrdersApi();
-      return response;
+      const response = await getFeedsApi();
+      return response.orders;
     } catch (error: unknown) {
       return rejectWithValue(error);
     }

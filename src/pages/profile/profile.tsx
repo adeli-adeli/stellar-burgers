@@ -46,14 +46,7 @@ export const Profile: FC = () => {
     }
 
     if (Object.keys(updateData).length > 0) {
-      dispatch(updateUser(updateData)).then((result) => {
-        if (updateUser.fulfilled.match(result)) {
-          setFormValue((state) => ({
-            ...state,
-            password: ''
-          }));
-        }
-      });
+      dispatch(updateUser(updateData));
     }
   };
 

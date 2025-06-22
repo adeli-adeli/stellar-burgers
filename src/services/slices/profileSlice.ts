@@ -144,26 +144,7 @@ export const authSlice = createSlice({
           (action.payload as string) ||
           action.error?.message ||
           'Ошибка авторизации';
-      });
-  }
-});
-
-export const { logoutUser } = authSlice.actions;
-export const authReducer = authSlice.reducer;
-
-//Обновление данных пользователя
-export const createUserSlice = createSlice({
-  name: 'createUser',
-  initialState,
-  reducers: {
-    createUser: (state, action) => {
-      state.user = state.user
-        ? { ...state.user, ...action.payload.user }
-        : action.payload.user;
-    }
-  },
-  extraReducers: (builder) => {
-    builder
+      })
       .addCase(profileUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -193,5 +174,5 @@ export const createUserSlice = createSlice({
   }
 });
 
-export const { createUser } = createUserSlice.actions;
-export const createUserReducer = createUserSlice.reducer;
+export const { logoutUser } = authSlice.actions;
+export const authReducer = authSlice.reducer;
