@@ -84,8 +84,6 @@ const App = () => {
         />
 
         <Route path='*' element={<NotFound404 />} />
-
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
       </Routes>
 
       {backgroundLocation && (

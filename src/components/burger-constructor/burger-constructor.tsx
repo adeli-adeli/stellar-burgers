@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
@@ -17,6 +17,13 @@ export const BurgerConstructor: FC = () => {
   const { isAuth, isLoading } = useAppSelector((state) => state.authSlice);
   const navigate = useNavigate();
 
+  //очистка конструктора после успешного заказа
+  useEffect(() => {
+    if (orderModalData && !orderRequest) {
+      dispatch(clearConstructor());
+    }
+  }, [dispatch, orderModalData, orderRequest]);
+
   // обработчик клика по кнопке "Оформить заказ"
   const onOrderClick = () => {
     if (!bun || orderRequest) return;
@@ -34,7 +41,6 @@ export const BurgerConstructor: FC = () => {
     ];
 
     dispatch(createOrder(ingredients));
-    dispatch(clearConstructor());
   };
 
   //обработчик закрытия модального окна
