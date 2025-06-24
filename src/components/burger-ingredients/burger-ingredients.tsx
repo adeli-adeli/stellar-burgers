@@ -4,11 +4,10 @@ import { useInView } from 'react-intersection-observer';
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
 import { useAppSelector, RootState } from 'src/services/store';
+import { selectIngredients } from 'src/services/slices/ingredientsSlice';
 
 export const BurgerIngredients: FC = () => {
-  const { ingredients } = useAppSelector(
-    (state: RootState) => state.ingredientsSlice
-  );
+  const ingredients = useAppSelector(selectIngredients);
 
   // фильтрация данных
   const buns = useMemo(

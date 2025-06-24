@@ -16,12 +16,29 @@ import styles from './app.module.css';
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import ProtectedRoute from '../../router/protected-router';
+import { useAppDispatch, useAppSelector } from 'src/services/store';
+import {
+  fetchIngredients,
+  selectIngredients
+} from 'src/services/slices/ingredientsSlice';
+import { profileUser } from 'src/services/slices/profileSlice';
+import { useEffect } from 'react';
 
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state as { backgroundLocation?: Location };
   const backgroundLocation = state?.backgroundLocation;
+  const ingredients = useAppSelector(selectIngredients);
+  const dispatch = useAppDispatch();
+
+  //Загружаем ингредиенты и профиль пользователя при монтировании компонента
+  useEffect(() => {
+    if (!ingredients || ingredients.length === 0) {
+      dispatch(fetchIngredients());
+    }
+    dispatch(profileUser());
+  }, [dispatch]);
 
   return (
     <div className={styles.app}>

@@ -11,6 +11,7 @@ import {
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { setCookie } from 'src/utils/cookie';
+import { RootState } from '../store';
 
 interface InitialState {
   user: TUser | null;
@@ -32,10 +33,17 @@ export const registerUser = createAsyncThunk<TAuthResponse, TRegisterData>(
   async (data, { rejectWithValue }) => {
     try {
       const response = await registerUserApi(data);
-      localStorage.setItem('token', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
+      if (response.success) {
+        localStorage.setItem('token', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      } else {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+      }
       return response;
     } catch (error: any) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       return rejectWithValue(error.message);
     }
   }
@@ -73,11 +81,18 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
   async (data, { rejectWithValue }) => {
     try {
       const response = await loginUserApi(data);
-      setCookie('accessToken', response.accessToken);
-      localStorage.setItem('token', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
+      if (response.success) {
+        setCookie('accessToken', response.accessToken);
+        localStorage.setItem('token', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
+      } else {
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+      }
       return response;
     } catch (error: any) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
       return rejectWithValue(error.message);
     }
   }
@@ -98,8 +113,6 @@ export const registerSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.user = action.payload.user;
-        localStorage.setItem('token', action.payload.accessToken);
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -110,6 +123,11 @@ export const registerSlice = createSlice({
       });
   }
 });
+export const selectRegister = (state: RootState) => state.registerSlice.user;
+export const isLoadingRegister = (state: RootState) =>
+  state.registerSlice.isLoading;
+export const errorRegister = (state: RootState) => state.registerSlice.error;
+export const isAuthRegister = (state: RootState) => state.registerSlice.isAuth;
 
 export const {} = registerSlice.actions;
 export const registerReducer = registerSlice.reducer;
@@ -122,8 +140,6 @@ export const authSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
       state.isAuth = false;
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
     }
   },
   extraReducers: (builder) => {
@@ -136,7 +152,6 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.user = action.payload.user;
-        localStorage.setItem('refreshToken', action.payload.refreshToken);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -173,6 +188,11 @@ export const authSlice = createSlice({
       });
   }
 });
+
+export const selectProfile = (state: RootState) => state.authSlice.user;
+export const isLoadingProfile = (state: RootState) => state.authSlice.isLoading;
+export const errorProfile = (state: RootState) => state.authSlice.error;
+export const isAuthProfile = (state: RootState) => state.authSlice.isAuth;
 
 export const { logoutUser } = authSlice.actions;
 export const authReducer = authSlice.reducer;

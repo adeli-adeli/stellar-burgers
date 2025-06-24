@@ -3,22 +3,12 @@ import styles from './constructor-page.module.css';
 import { BurgerIngredients } from '../../components';
 import { BurgerConstructor } from '../../components';
 import { Preloader } from '../../components/ui';
-import { FC, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/services/store';
-import { fetchIngredients } from 'src/services/slices/ingredientsSlice';
+import { FC } from 'react';
+import { useAppSelector } from 'src/services/store';
+import { selectIsLoading } from 'src/services/slices/ingredientsSlice';
 
 export const ConstructorPage: FC = () => {
-  const dispatch = useAppDispatch();
-  const { isLoading, ingredients } = useAppSelector(
-    (state) => state.ingredientsSlice
-  );
-
-  // Загружаем ингредиенты при монтировании компонента только если данных нет
-  useEffect(() => {
-    if (ingredients.length === 0) {
-      dispatch(fetchIngredients());
-    }
-  }, [dispatch, ingredients.length]);
+  const isLoading = useAppSelector(selectIsLoading);
 
   return (
     <>

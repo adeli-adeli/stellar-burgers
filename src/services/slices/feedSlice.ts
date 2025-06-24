@@ -1,6 +1,7 @@
 import { getFeedsApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
+import { RootState } from '../store';
 
 export interface InitialState {
   orders: TOrder[];
@@ -16,7 +17,7 @@ export const initialState: InitialState = {
 
 //Асинхронный thunk для получения заказов
 export const getFeeds = createAsyncThunk(
-  'feed/greFeeds',
+  'feed/getFeeds',
   async (_, { rejectWithValue }) => {
     try {
       const response = await getFeedsApi();
@@ -47,6 +48,10 @@ export const feedSlice = createSlice({
       });
   }
 });
+
+export const ordersFeed = (state: RootState) => state.feedSlice.orders;
+export const isLoadingFeed = (state: RootState) => state.feedSlice.isLoading;
+export const errorFeed = (state: RootState) => state.feedSlice.error;
 
 export const {} = feedSlice.actions;
 export const feedReducer = feedSlice.reducer;

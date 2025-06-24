@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
 import { useAppSelector } from 'src/services/store';
+import { ordersFeed } from 'src/services/slices/feedSlice';
 
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders
@@ -11,7 +12,7 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
     .slice(0, 20);
 
 export const FeedInfo: FC = () => {
-  const { orders } = useAppSelector((state) => state.feedSlice);
+  const orders = useAppSelector(ordersFeed);
 
   const feed = {
     total: orders.length,

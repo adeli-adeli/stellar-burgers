@@ -4,12 +4,12 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useAppSelector } from 'src/services/store';
 import { useParams } from 'react-router-dom';
+import { ordersFeed } from 'src/services/slices/feedSlice';
+import { selectIngredients } from 'src/services/slices/ingredientsSlice';
 
 export const OrderInfo: FC = () => {
-  const ingredients = useAppSelector(
-    (state) => state.ingredientsSlice.ingredients
-  );
-  const orders = useAppSelector((state) => state.feedSlice.orders);
+  const ingredients = useAppSelector(selectIngredients);
+  const orders = useAppSelector(ordersFeed);
   const { number } = useParams<{ number: string }>();
   const order = orders.find((item) => String(item.number) === number);
 

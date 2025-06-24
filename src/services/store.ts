@@ -4,7 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 import { constructorReducer } from './slices/constructorSlice';
 import { ingredientsReducer } from './slices/ingredientsSlice';
-import { orderReducer } from './slices/orderSlice';
+import { orderReducer, profileOrderFeedReducer } from './slices/orderSlice';
 import { authReducer, registerReducer } from './slices/profileSlice';
 import { feedReducer } from './slices/feedSlice';
 
@@ -14,7 +14,8 @@ const rootReducer = {
   orderSlice: orderReducer,
   registerSlice: registerReducer,
   authSlice: authReducer,
-  feedSlice: feedReducer
+  feedSlice: feedReducer,
+  profileOrderFeedReducer: profileOrderFeedReducer
 };
 
 const store = configureStore({

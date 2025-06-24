@@ -1,18 +1,9 @@
-import { useAppDispatch, useAppSelector } from 'src/services/store';
-
-import React, { useEffect } from 'react';
-import { profileUser } from 'src/services/slices/profileSlice';
+import { isAuthProfile, selectProfile } from 'src/services/slices/profileSlice';
+import { useAppSelector } from 'src/services/store';
 
 const useAuth = () => {
-  const { isAuth } = useAppSelector((state) => state.authSlice);
-  const dispatch = useAppDispatch();
+  const isAuth = useAppSelector(isAuthProfile);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token && !isAuth) {
-      dispatch(profileUser());
-    }
-  }, [isAuth, dispatch]);
   return { isAuth };
 };
 

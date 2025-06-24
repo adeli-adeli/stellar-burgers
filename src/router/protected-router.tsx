@@ -1,6 +1,7 @@
 // src/components/ProtectedRoute.tsx
 import { Navigate, useLocation } from 'react-router-dom';
 import useAuth from 'src/hooks/useAuth';
+import { Preloader } from '@ui';
 
 interface Props {
   children: React.ReactNode;

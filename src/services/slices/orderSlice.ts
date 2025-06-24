@@ -1,6 +1,7 @@
 import { getOrdersApi, orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
+import { RootState } from '../store';
 
 interface InitialState {
   orders: TOrder[];
@@ -20,6 +21,19 @@ export const createOrder = createAsyncThunk(
   async (ingredients: string[], { rejectWithValue }) => {
     try {
       const response = await orderBurgerApi(ingredients);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+//Асинхронный thunk для получения заказов пользователя
+export const getOrders = createAsyncThunk(
+  'order/getOrders',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getOrdersApi();
       return response;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -65,7 +79,40 @@ export const OrderSlice = createSlice({
   }
 });
 
+export const orders = (state: RootState) => state.orderSlice.orders;
+export const request = (state: RootState) => state.orderSlice.orderRequest;
+export const modalData = (state: RootState) => state.orderSlice.orderModalData;
+
 export const { setOrderRequest, setOrderModalData, closeModal } =
   OrderSlice.actions;
-
 export const orderReducer = OrderSlice.reducer;
+
+export const ProfileOrderFeedSlice = createSlice({
+  name: 'profileOrderFeed',
+  initialState,
+  reducers: {},
+
+  // обработка состояния загрузки
+  extraReducers: (builder) => {
+    builder
+      .addCase(getOrders.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(getOrders.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orders = action.payload;
+      })
+      .addCase(getOrders.rejected, (state) => {
+        state.orderRequest = false;
+      });
+  }
+});
+
+export const ordersProfile = (state: RootState) =>
+  state.profileOrderFeedReducer.orders;
+export const orderRequestProfile = (state: RootState) =>
+  state.profileOrderFeedReducer.orderRequest;
+export const orderModalDataProfile = (state: RootState) =>
+  state.profileOrderFeedReducer.orderModalData;
+
+export const profileOrderFeedReducer = ProfileOrderFeedSlice.reducer;

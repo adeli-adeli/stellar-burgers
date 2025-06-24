@@ -5,15 +5,14 @@ import { OrderCardProps } from './type';
 import { TIngredient } from '@utils-types';
 import { OrderCardUI } from '../ui/order-card';
 import { useAppSelector } from 'src/services/store';
+import { selectIngredients } from 'src/services/slices/ingredientsSlice';
 
 const maxIngredients = 6;
 
 export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
   const location = useLocation();
 
-  const ingredients = useAppSelector(
-    (state) => state.ingredientsSlice.ingredients
-  );
+  const ingredients = useAppSelector(selectIngredients);
 
   const orderInfo = useMemo(() => {
     if (!ingredients.length) return null;
