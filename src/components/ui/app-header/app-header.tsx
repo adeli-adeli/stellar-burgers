@@ -7,12 +7,13 @@ import {
   Logo,
   ProfileIcon
 } from '@zlden/react-developer-burger-ui-components';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useAppSelector } from 'src/services/store';
+import { isAuthProfile } from 'src/services/slices/profileSlice';
 
 export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
-  //получаем текущий путь и проверяем активна ли ссылка
-  const location = useLocation();
-  const isActive = (path: string) => location.pathname === path;
+  const isAuth = useAppSelector(isAuthProfile);
+
   return (
     <header className={styles.header}>
       <nav className={`${styles.menu} p-4`}>
@@ -58,7 +59,7 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
         </div>
         <div className={styles.link_position_last}>
           <NavLink
-            to='/profile'
+            to={isAuth ? '/profile' : '/login'}
             className={({ isActive }) =>
               `${styles.link} ${isActive ? styles.link_active : ''}`
             }

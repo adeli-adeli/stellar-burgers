@@ -18,13 +18,15 @@ interface InitialState {
   isAuth: boolean;
   isLoading: boolean;
   error: string | null;
+  isAuthChecked: boolean;
 }
 
 const initialState: InitialState = {
   user: null,
   isAuth: false,
   isLoading: false,
-  error: null
+  error: null,
+  isAuthChecked: false
 };
 
 //Регистрация пользователя
@@ -99,42 +101,8 @@ export const loginUser = createAsyncThunk<TAuthResponse, TLoginData>(
 );
 
 //Регистрация пользователя
-export const registerSlice = createSlice({
-  name: 'register',
-  initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(registerUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isAuth = true;
-        state.user = action.payload.user;
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error =
-          (action.payload as string) ||
-          action.error?.message ||
-          'Ошибка регистрации';
-      });
-  }
-});
-export const selectRegister = (state: RootState) => state.registerSlice.user;
-export const isLoadingRegister = (state: RootState) =>
-  state.registerSlice.isLoading;
-export const errorRegister = (state: RootState) => state.registerSlice.error;
-export const isAuthRegister = (state: RootState) => state.registerSlice.isAuth;
-
-export const {} = registerSlice.actions;
-export const registerReducer = registerSlice.reducer;
-
-//Авторизация пользователя
-export const authSlice = createSlice({
-  name: 'auth',
+export const profileSlice = createSlice({
+  name: 'profile',
   initialState,
   reducers: {
     logoutUser: (state) => {
@@ -144,6 +112,26 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //Регистраци
+      .addCase(registerUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isAuth = true;
+        state.user = action.payload.user;
+        state.isAuthChecked = true;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error =
+          (action.payload as string) ||
+          action.error?.message ||
+          'Ошибка регистрации';
+        state.isAuthChecked = true;
+      })
+      //Авторизация
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -152,6 +140,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isAuth = true;
         state.user = action.payload.user;
+        state.isAuthChecked = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -159,7 +148,9 @@ export const authSlice = createSlice({
           (action.payload as string) ||
           action.error?.message ||
           'Ошибка авторизации';
+        state.isAuthChecked = true;
       })
+      //Получение данных пользователя
       .addCase(profileUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -168,11 +159,14 @@ export const authSlice = createSlice({
         state.user = action.payload.user;
         state.isLoading = false;
         state.error = null;
+        state.isAuthChecked = true;
       })
       .addCase(profileUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+        state.isAuthChecked = true;
       })
+      //Обновление данных пользователя
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -189,10 +183,13 @@ export const authSlice = createSlice({
   }
 });
 
-export const selectProfile = (state: RootState) => state.authSlice.user;
-export const isLoadingProfile = (state: RootState) => state.authSlice.isLoading;
-export const errorProfile = (state: RootState) => state.authSlice.error;
-export const isAuthProfile = (state: RootState) => state.authSlice.isAuth;
+export const selectProfile = (state: RootState) => state.profileSlice.user;
+export const isLoadingProfile = (state: RootState) =>
+  state.profileSlice.isLoading;
+export const errorProfile = (state: RootState) => state.profileSlice.error;
+export const isAuthProfile = (state: RootState) => state.profileSlice.isAuth;
+export const isAuthCheckedProfile = (state: RootState) =>
+  state.profileSlice.isAuthChecked;
 
-export const { logoutUser } = authSlice.actions;
-export const authReducer = authSlice.reducer;
+export const { logoutUser } = profileSlice.actions;
+export const profileReducer = profileSlice.reducer;

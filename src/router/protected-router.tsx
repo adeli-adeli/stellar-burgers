@@ -9,16 +9,21 @@ interface Props {
 }
 
 const ProtectedRoute = ({ children, onlyUnAuth = false }: Props) => {
-  const { isAuth } = useAuth();
+  const { isAuth, isAuthChecked } = useAuth();
   const location = useLocation();
 
+  if (!isAuthChecked) {
+    return <Preloader />;
+  }
+
   if (onlyUnAuth && isAuth) {
-    // Пользователь авторизован — не пускаем на страницы /login, /register и т.п.
-    return <Navigate to='/' replace />;
+    // Редирект пользователя туда, откуда он пришел или на '/'
+    const from = location.state?.from?.pathname || '/';
+    return <Navigate to={from} replace />;
   }
 
   if (!onlyUnAuth && !isAuth) {
-    // Пользователь не авторизован, но пытается на защищённую страницу
+    // Редирект на '/login' и сохраняем текущий путь
     return <Navigate to='/login' state={{ from: location }} replace />;
   }
 
