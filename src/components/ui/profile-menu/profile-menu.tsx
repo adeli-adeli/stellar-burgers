@@ -15,7 +15,6 @@ export const ProfileMenuUI: FC<ProfileMenuUIProps> = ({
           styles.link
         } ${isActive ? styles.link_active : ''}`
       }
-      end
     >
       Профиль
     </NavLink>
