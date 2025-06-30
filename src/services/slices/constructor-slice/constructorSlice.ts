@@ -8,7 +8,7 @@ interface InitialState {
   constructorItems: TConstructorIngredient[];
 }
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
   bun: null,
   constructorItems: []
 };

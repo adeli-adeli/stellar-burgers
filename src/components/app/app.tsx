@@ -17,12 +17,13 @@ import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import ProtectedRoute from '../../router/protected-router';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
+
+import { useEffect } from 'react';
 import {
   fetchIngredients,
   selectIngredients
-} from 'src/services/slices/ingredientsSlice';
-import { profileUser } from 'src/services/slices/profileSlice';
-import { useEffect } from 'react';
+} from 'src/services/slices/ingredients-slice/ingredientsSlice';
+import { profileUser } from 'src/services/slices/profile-slice/profileSlice';
 
 const App = () => {
   const location = useLocation();

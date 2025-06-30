@@ -1,7 +1,7 @@
 import {
   isAuthCheckedProfile,
   isAuthProfile
-} from 'src/services/slices/profileSlice';
+} from 'src/services/slices/profile-slice/profileSlice';
 import { useAppSelector } from 'src/services/store';
 
 const useAuth = () => {
