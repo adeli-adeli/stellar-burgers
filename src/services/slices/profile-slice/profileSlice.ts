@@ -10,8 +10,8 @@ import {
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
+import { RootState } from 'src/services/store';
 import { setCookie } from 'src/utils/cookie';
-import { RootState } from '../store';
 
 interface InitialState {
   user: TUser | null;

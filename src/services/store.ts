@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-
-import { constructorReducer } from './slices/constructorSlice';
-import { ingredientsReducer } from './slices/ingredientsSlice';
-import { orderReducer, profileOrderFeedReducer } from './slices/orderSlice';
-import { profileReducer } from './slices/profileSlice';
-import { feedReducer } from './slices/feedSlice';
+import { ingredientsReducer } from './slices/ingredients-slice/ingredientsSlice';
+import { constructorReducer } from './slices/constructor-slice/constructorSlice';
+import {
+  orderReducer,
+  profileOrderFeedReducer
+} from './slices/order-slice/orderSlice';
+import { profileReducer } from './slices/profile-slice/profileSlice';
+import { feedReducer } from './slices/feed-slice/feedSlice';
 
 const rootReducer = {
   ingredientsSlice: ingredientsReducer,
