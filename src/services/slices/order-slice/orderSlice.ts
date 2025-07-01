@@ -1,4 +1,4 @@
-import { getOrdersApi, orderBurgerApi } from '@api';
+import { getOrdersApi, orderBurgerApi } from 'src/utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState } from 'src/services/store';

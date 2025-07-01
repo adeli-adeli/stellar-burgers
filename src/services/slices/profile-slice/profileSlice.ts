@@ -7,7 +7,7 @@ import {
   TLoginData,
   TRegisterData,
   TUserResponse
-} from '@api';
+} from 'src/utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { RootState } from 'src/services/store';

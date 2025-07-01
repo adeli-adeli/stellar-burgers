@@ -27,7 +27,8 @@ const config: Config = {
   // Маппинг модулей — замена импортов стилей (css, scss и т.д.) на мок,
   // чтобы не возникало ошибок при импорте стилей в тестах
   moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+    '^src/(.*)$': '<rootDir>/src/$1'
   }
 };
 
