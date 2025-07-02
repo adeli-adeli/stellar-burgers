@@ -4,7 +4,7 @@ import {
   initialState
 } from './ingredientsSlice';
 
-describe('Проверяют редьюсер слайса ingredientsSlice', () => {
+describe('Проверяют редьюсер slice ingredientsSlice', () => {
   it('должен установить isLoading в true при pending', () => {
     const action = { type: fetchIngredients.pending.type };
     const result = ingredientsReducer(initialState, action);

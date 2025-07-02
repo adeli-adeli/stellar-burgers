@@ -12,6 +12,7 @@ const ProtectedRoute = ({ children, onlyUnAuth = false }: Props) => {
   const { isAuth, isAuthChecked } = useAuth();
   const location = useLocation();
 
+  // Ждем ответа, авторизован пользователь или нет
   if (!isAuthChecked) {
     return <Preloader />;
   }

@@ -1,6 +1,6 @@
 import { feedReducer, getFeeds, initialState } from './feedSlice';
 
-describe('Проверяют редьюсер слайса feedSlice', () => {
+describe('Проверяют редьюсер slice feedSlice', () => {
   it('должен установить isLoading в true при pending', () => {
     const action = { type: getFeeds.pending.type };
     const result = feedReducer(initialState, action);

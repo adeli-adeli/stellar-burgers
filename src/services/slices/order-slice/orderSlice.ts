@@ -2,17 +2,20 @@ import { getOrdersApi, orderBurgerApi } from 'src/utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState } from 'src/services/store';
+import { error } from 'console';
 
 interface InitialState {
   orders: TOrder[];
   orderRequest: boolean;
   orderModalData: TOrder | null;
+  orderError: string | null;
 }
 
 export const initialState: InitialState = {
   orders: [],
   orderRequest: false,
-  orderModalData: null
+  orderModalData: null,
+  orderError: null
 };
 
 //Асинхронный thunk для создания заказа
@@ -67,25 +70,31 @@ export const OrderSlice = createSlice({
     builder
       .addCase(createOrder.pending, (state) => {
         state.orderRequest = true;
+        state.orderError = null;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
         state.orders = [...state.orders, action.payload.order];
+        state.orderError = null;
       })
-      .addCase(createOrder.rejected, (state) => {
+      .addCase(createOrder.rejected, (state, action) => {
+        state.orderError = action.payload as string;
         state.orderRequest = false;
       })
 
       // обработка состояния загрузки получения данных заказа
       .addCase(getOrders.pending, (state) => {
         state.orderRequest = true;
+        state.orderError = null;
       })
       .addCase(getOrders.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orders = action.payload;
+        state.orderError = null;
       })
-      .addCase(getOrders.rejected, (state) => {
+      .addCase(getOrders.rejected, (state, action) => {
+        state.orderError = action.payload as string;
         state.orderRequest = false;
       });
   }

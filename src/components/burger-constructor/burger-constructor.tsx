@@ -39,6 +39,7 @@ export const BurgerConstructor: FC = () => {
 
   // обработчик клика по кнопке "Оформить заказ"
   const onOrderClick = () => {
+    // Прерываем выполнение, если булочка не выбрана или заказ уже отправляется
     if (!bun || orderRequest) return;
 
     //проверка авторизации

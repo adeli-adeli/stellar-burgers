@@ -35,7 +35,7 @@ const bunIngredient = {
   image_large: 'https://code.s3.yandex.net/react/code/bun-01-large.png'
 };
 
-describe('Проверяют редьюсер слайса constructorSlice', () => {
+describe('Проверяют редьюсер slice constructorSlice', () => {
   beforeEach(() => {
     (uuidv4 as jest.Mock).mockReturnValue('mock-id');
   });

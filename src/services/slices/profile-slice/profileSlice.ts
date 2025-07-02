@@ -21,7 +21,7 @@ interface InitialState {
   isAuthChecked: boolean;
 }
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
   user: null,
   isAuth: false,
   isLoading: false,
@@ -122,6 +122,7 @@ export const profileSlice = createSlice({
         state.isAuth = true;
         state.user = action.payload.user;
         state.isAuthChecked = true;
+        state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -142,6 +143,7 @@ export const profileSlice = createSlice({
         state.isAuth = true;
         state.user = action.payload.user;
         state.isAuthChecked = true;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
