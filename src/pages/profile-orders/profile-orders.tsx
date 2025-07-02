@@ -1,13 +1,11 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
-import {
-  getOrders,
-  ordersProfile
-} from 'src/services/slices/order-slice/orderSlice';
+import { getOrders, orders } from 'src/services/slices/order-slice/orderSlice';
+
 import { useAppDispatch, useAppSelector } from 'src/services/store';
 
 export const ProfileOrders: FC = () => {
-  const orders = useAppSelector(ordersProfile);
+  const lists = useAppSelector(orders);
   const dispatch = useAppDispatch();
 
   //Загружаем заказы при монтировании компонента
@@ -15,5 +13,5 @@ export const ProfileOrders: FC = () => {
     dispatch(getOrders());
   }, [dispatch]);
 
-  return <ProfileOrdersUI orders={orders} />;
+  return <ProfileOrdersUI orders={lists} />;
 };

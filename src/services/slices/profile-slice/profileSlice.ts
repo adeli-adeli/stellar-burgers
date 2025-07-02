@@ -131,6 +131,7 @@ export const profileSlice = createSlice({
           'Ошибка регистрации';
         state.isAuthChecked = true;
       })
+
       //Авторизация
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
@@ -150,6 +151,7 @@ export const profileSlice = createSlice({
           'Ошибка авторизации';
         state.isAuthChecked = true;
       })
+
       //Получение данных пользователя
       .addCase(profileUser.pending, (state) => {
         state.isLoading = true;
@@ -166,6 +168,7 @@ export const profileSlice = createSlice({
         state.error = action.payload as string;
         state.isAuthChecked = true;
       })
+
       //Обновление данных пользователя
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;

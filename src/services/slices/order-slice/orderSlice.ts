@@ -9,7 +9,7 @@ interface InitialState {
   orderModalData: TOrder | null;
 }
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
   orders: [],
   orderRequest: false,
   orderModalData: null
@@ -62,7 +62,7 @@ export const OrderSlice = createSlice({
     }
   },
 
-  // обработка состояния загрузки
+  // обработка состояния загрузки создания заказа
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {
@@ -75,26 +75,9 @@ export const OrderSlice = createSlice({
       })
       .addCase(createOrder.rejected, (state) => {
         state.orderRequest = false;
-      });
-  }
-});
+      })
 
-export const orders = (state: RootState) => state.orderSlice.orders;
-export const request = (state: RootState) => state.orderSlice.orderRequest;
-export const modalData = (state: RootState) => state.orderSlice.orderModalData;
-
-export const { setOrderRequest, setOrderModalData, closeModal } =
-  OrderSlice.actions;
-export const orderReducer = OrderSlice.reducer;
-
-export const ProfileOrderFeedSlice = createSlice({
-  name: 'profileOrderFeed',
-  initialState,
-  reducers: {},
-
-  // обработка состояния загрузки
-  extraReducers: (builder) => {
-    builder
+      // обработка состояния загрузки получения данных заказа
       .addCase(getOrders.pending, (state) => {
         state.orderRequest = true;
       })
@@ -108,11 +91,10 @@ export const ProfileOrderFeedSlice = createSlice({
   }
 });
 
-export const ordersProfile = (state: RootState) =>
-  state.profileOrderFeedReducer.orders;
-export const orderRequestProfile = (state: RootState) =>
-  state.profileOrderFeedReducer.orderRequest;
-export const orderModalDataProfile = (state: RootState) =>
-  state.profileOrderFeedReducer.orderModalData;
+export const orders = (state: RootState) => state.orderSlice.orders;
+export const request = (state: RootState) => state.orderSlice.orderRequest;
+export const modalData = (state: RootState) => state.orderSlice.orderModalData;
 
-export const profileOrderFeedReducer = ProfileOrderFeedSlice.reducer;
+export const { setOrderRequest, setOrderModalData, closeModal } =
+  OrderSlice.actions;
+export const orderReducer = OrderSlice.reducer;
