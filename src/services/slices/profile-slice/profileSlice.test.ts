@@ -134,9 +134,9 @@ describe('Проверяют редьюсер slice profileSlice', () => {
   it('При вызове Success записывает данные в user и ставит isLoading в false', () => {
     const user = {
       id: '1',
-      name: 'джон',
+      name: 'deli',
       email: 'yandex@yandex.ru',
-      password: '12346'
+      password: '1234'
     };
 
     const action = { type: updateUser.fulfilled.type, payload: { user } };
