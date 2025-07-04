@@ -7,11 +7,11 @@ import {
   TLoginData,
   TRegisterData,
   TUserResponse
-} from '@api';
+} from 'src/utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
+import { RootState } from 'src/services/store';
 import { setCookie } from 'src/utils/cookie';
-import { RootState } from '../store';
 
 interface InitialState {
   user: TUser | null;
@@ -21,7 +21,7 @@ interface InitialState {
   isAuthChecked: boolean;
 }
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
   user: null,
   isAuth: false,
   isLoading: false,
@@ -122,6 +122,7 @@ export const profileSlice = createSlice({
         state.isAuth = true;
         state.user = action.payload.user;
         state.isAuthChecked = true;
+        state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -131,6 +132,7 @@ export const profileSlice = createSlice({
           'Ошибка регистрации';
         state.isAuthChecked = true;
       })
+
       //Авторизация
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
@@ -141,6 +143,7 @@ export const profileSlice = createSlice({
         state.isAuth = true;
         state.user = action.payload.user;
         state.isAuthChecked = true;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -150,6 +153,7 @@ export const profileSlice = createSlice({
           'Ошибка авторизации';
         state.isAuthChecked = true;
       })
+
       //Получение данных пользователя
       .addCase(profileUser.pending, (state) => {
         state.isLoading = true;
@@ -166,6 +170,7 @@ export const profileSlice = createSlice({
         state.error = action.payload as string;
         state.isAuthChecked = true;
       })
+
       //Обновление данных пользователя
       .addCase(updateUser.pending, (state) => {
         state.isLoading = true;

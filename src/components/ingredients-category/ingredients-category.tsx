@@ -6,7 +6,7 @@ import { useAppSelector } from 'src/services/store';
 import {
   bunItem,
   constructorItems
-} from 'src/services/slices/constructorSlice';
+} from 'src/services/slices/constructor-slice/constructorSlice';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,

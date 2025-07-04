@@ -1,12 +1,12 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/services/store';
 import {
   getFeeds,
   isLoadingFeed,
   ordersFeed
-} from 'src/services/slices/feedSlice';
+} from 'src/services/slices/feed-slice/feedSlice';
+import { useAppDispatch, useAppSelector } from 'src/services/store';
 
 export const Feed: FC = () => {
   const orders = useAppSelector(ordersFeed);

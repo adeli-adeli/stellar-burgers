@@ -1,7 +1,10 @@
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
-import { errorProfile, registerUser } from 'src/services/slices/profileSlice';
+import {
+  errorProfile,
+  registerUser
+} from 'src/services/slices/profile-slice/profileSlice';
 
 export const Register: FC = () => {
   const [userName, setUserName] = useState('');

@@ -9,7 +9,7 @@ import {
 } from '@zlden/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
 import { useAppSelector } from 'src/services/store';
-import { isAuthProfile } from 'src/services/slices/profileSlice';
+import { isAuthProfile } from 'src/services/slices/profile-slice/profileSlice';
 
 export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => {
   const isAuth = useAppSelector(isAuthProfile);
