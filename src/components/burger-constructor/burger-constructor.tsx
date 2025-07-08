@@ -4,20 +4,20 @@ import { BurgerConstructorUI } from '@ui';
 import { useAppDispatch, useAppSelector } from 'src/services/store';
 import { useNavigate } from 'react-router-dom';
 import {
+  bunItem,
+  clearConstructor,
+  constructorItems
+} from 'src/services/slices/constructor-slice/constructorSlice';
+import {
   closeModal,
   createOrder,
   modalData,
   request
-} from 'src/services/slices/orderSlice';
-import {
-  bunItem,
-  clearConstructor,
-  constructorItems
-} from 'src/services/slices/constructorSlice';
+} from 'src/services/slices/order-slice/orderSlice';
 import {
   isAuthProfile,
   isLoadingProfile
-} from 'src/services/slices/profileSlice';
+} from 'src/services/slices/profile-slice/profileSlice';
 
 export const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
@@ -39,6 +39,7 @@ export const BurgerConstructor: FC = () => {
 
   // обработчик клика по кнопке "Оформить заказ"
   const onOrderClick = () => {
+    // Прерываем выполнение, если булочка не выбрана или заказ уже отправляется
     if (!bun || orderRequest) return;
 
     //проверка авторизации

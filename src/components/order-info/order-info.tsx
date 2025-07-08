@@ -4,8 +4,8 @@ import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useAppSelector } from 'src/services/store';
 import { useParams } from 'react-router-dom';
-import { ordersFeed } from 'src/services/slices/feedSlice';
-import { selectIngredients } from 'src/services/slices/ingredientsSlice';
+import { selectIngredients } from 'src/services/slices/ingredients-slice/ingredientsSlice';
+import { ordersFeed } from 'src/services/slices/feed-slice/feedSlice';
 
 export const OrderInfo: FC = () => {
   const ingredients = useAppSelector(selectIngredients);

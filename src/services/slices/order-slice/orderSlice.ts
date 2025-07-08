@@ -1,18 +1,21 @@
-import { getOrdersApi, orderBurgerApi } from '@api';
+import { getOrdersApi, orderBurgerApi } from 'src/utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
-import { RootState } from '../store';
+import { RootState } from 'src/services/store';
+import { error } from 'console';
 
 interface InitialState {
   orders: TOrder[];
   orderRequest: boolean;
   orderModalData: TOrder | null;
+  orderError: string | null;
 }
 
-const initialState: InitialState = {
+export const initialState: InitialState = {
   orders: [],
   orderRequest: false,
-  orderModalData: null
+  orderModalData: null,
+  orderError: null
 };
 
 //Асинхронный thunk для создания заказа
@@ -62,18 +65,36 @@ export const OrderSlice = createSlice({
     }
   },
 
-  // обработка состояния загрузки
+  // обработка состояния загрузки создания заказа
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {
         state.orderRequest = true;
+        state.orderError = null;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.orderRequest = false;
         state.orderModalData = action.payload.order;
         state.orders = [...state.orders, action.payload.order];
+        state.orderError = null;
       })
-      .addCase(createOrder.rejected, (state) => {
+      .addCase(createOrder.rejected, (state, action) => {
+        state.orderError = action.payload as string;
+        state.orderRequest = false;
+      })
+
+      // обработка состояния загрузки получения данных заказа
+      .addCase(getOrders.pending, (state) => {
+        state.orderRequest = true;
+        state.orderError = null;
+      })
+      .addCase(getOrders.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orders = action.payload;
+        state.orderError = null;
+      })
+      .addCase(getOrders.rejected, (state, action) => {
+        state.orderError = action.payload as string;
         state.orderRequest = false;
       });
   }
@@ -86,33 +107,3 @@ export const modalData = (state: RootState) => state.orderSlice.orderModalData;
 export const { setOrderRequest, setOrderModalData, closeModal } =
   OrderSlice.actions;
 export const orderReducer = OrderSlice.reducer;
-
-export const ProfileOrderFeedSlice = createSlice({
-  name: 'profileOrderFeed',
-  initialState,
-  reducers: {},
-
-  // обработка состояния загрузки
-  extraReducers: (builder) => {
-    builder
-      .addCase(getOrders.pending, (state) => {
-        state.orderRequest = true;
-      })
-      .addCase(getOrders.fulfilled, (state, action) => {
-        state.orderRequest = false;
-        state.orders = action.payload;
-      })
-      .addCase(getOrders.rejected, (state) => {
-        state.orderRequest = false;
-      });
-  }
-});
-
-export const ordersProfile = (state: RootState) =>
-  state.profileOrderFeedReducer.orders;
-export const orderRequestProfile = (state: RootState) =>
-  state.profileOrderFeedReducer.orderRequest;
-export const orderModalDataProfile = (state: RootState) =>
-  state.profileOrderFeedReducer.orderModalData;
-
-export const profileOrderFeedReducer = ProfileOrderFeedSlice.reducer;
